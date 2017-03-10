@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../js/vue.js"></script>
+    <script src="../js/to_bean.js"></script>
+    <script src="../js/jquery-3.1.1.js"></script>
+</head>
+<body>
+
+<span>Api文档Git地址：</span>
+<input id="gitUrl" type="text" style="width:300px"
+       value="https://github.com/free46000"/><br/>
+<span>Api文档本地存储位置：</span>
+<input id="gitPath" type="text" style="width:300px" value="apiblueprint/git/"/><br/>
+<button id="submit">生成</button>
+<br/>
+
+<div id="bean" v-if="beans">
+    <div v-for="bean in beans">
+        <div :id="bean.className" style="background: cornsilk">
+            <p>package com.cim120.patient.data.bean.response;</p>
+
+            <p v-for="imp in bean.importTypes">import {{imp}};</p>
+
+            <p>public class {{ bean.className }} {</p>
+            <div v-for="field in bean.fields">
+                private {{field.type}} {{field.name}};
+            </div>
+            <div v-for="field in bean.fields">
+                public void set{{ firstToUpperCase(field.name) }}({{field.type}} {{ field.name }}) {<br>
+                this.{{field.name}} = {{field.name}};<br>
+                }<br><br>
+                public {{field.type}} get{{ firstToUpperCase(field.name) }}() {<br>
+                return this.{{field.name}};<br>
+                }<br><br>
+            </div>
+            <p>}</p>
+
+        </div>
+        <div>
+            <p>==========================================================================================</p>
+        </div>
+    </div>
+</div>
+
+<div id="apiset" v-if="apiArr">
+    <div style="background: cornsilk">
+        <p>package com.cim120.patient.data.bean.response;</p>
+
+        <p>import java.util.Map;</p>
+
+        <p>import okhttp3.ResponseBody;</p>
+        <p>import retrofit2.http.*;</p>
+        <p>import rx.Observable;</p>
+
+        <p>public interface ApiSet {</p>
+        <div v-for="api in apiArr">
+            <p>/**</p>
+            <p>*{{api.title}} {{api.subTitle}} {{api.tip}}</p>
+            <p>*/</p>
+            <p>@{{api.method}}("{{api.href}}")</p>
+            <p>Observable&lt;Object&gt; request{{api.hrefName}}(
+                <span v-for="(hrefVar, index) in api.hrefVariables">
+                    @Path("{{hrefVar.content}}") {{hrefVar.element}} {{hrefVar.content}}
+                    <span v-if="index != api.hrefVariables.length-1">,</span>
+                </span>
+                <span v-if="api.param">@Body Map&lt;String, String&gt; paramMap</span>
+                <span>);</span>
+            </p>
+        </div>
+        <p>}</p>
+    </div>
+</div>
+</body>
+
+<script>
+    $("#submit").click(generateCode);
+
+    function generateCode() {
+        var gitPath = $("#gitPath")[0].value;
+        var gitUrl = $("#gitUrl")[0].value;
+
+        $.get('/apis', {path: gitPath, url: gitUrl}, function (apiArr, textStatus) {
+            if (!apiArr) {
+                console.log(err);
+                return;
+            }
+            var beans = [];
+            for (var i in apiArr) {
+                if ((typeof apiArr[i].response == 'object') && apiArr[i].response.constructor == Object) {
+                    beans = beans.concat(generateBeanFieldFromJson(JSON.stringify(apiArr[i].response), apiArr[i].hrefName));
+                }
+            }
+            new Vue({
+                el: '#bean',
+                data: {
+                    beans: beans
+                },
+                methods: {
+                    firstToUpperCase: function (str) {
+                        return str.substr(0, 1).toUpperCase() + str.substr(1);
+                    }
+                }
+
+            });
+            new Vue({
+                el: '#apiset',
+                data: {
+                    apiArr: apiArr
+                },
+                methods: {
+                    camelCase: function (input) {
+                        return input.replace(/\/{\w*\}/g, '').replace(/\/(.)/g, function (match, group1) {
+                            return group1.toUpperCase();
+                        });
+                    }
+                }
+            });
+            console.log(textStatus);
+        });
+    }
+</script>
+
+</html>
