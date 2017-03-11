@@ -8,8 +8,19 @@ const drafter = require('drafter');
  * 解析api
  * @param data api blueprint 文本
  * @param callBack function (err, apiArr) apiArr包含api blueprint中包含的请求数组，err不为空则出错
- * apiArr:[{href:'',hrefName:'',title:'',hrefVariables:[{"element": "String","content": "post_id"}],subTitle:''
- *          ,tip:'',method:'',response:{},param:{}}]
+ * apiArr:[{
+ *   href:'',//请求路径:/get/task/{taskid}
+ *   hrefName:'',//路径对应name:GetTask
+ *   title:'',//请求标题：获取任务
+ *   hrefVariables:[ //路径对应Variable"content": "taskid"
+ *       {"element": "String","content": "post_id"}
+ *   ],
+ *   subTitle:'',//请求标题：通过id获取任务
+ *   tip:'',//相关提示
+ *   method:'',//请求类型 POST or GET ...
+ *   response:{},//响应实体{'taskId':1,'taskName':任务}
+ *   param:{}//请求参数taskId
+ * }]
  */
 function parseApi(data, callBack) {
     if (!data) {

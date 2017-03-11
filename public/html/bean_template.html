@@ -20,7 +20,7 @@
 <div id="bean" v-if="beans">
     <div v-for="bean in beans">
         <div :id="bean.className" style="background: cornsilk">
-            <p>package com.cim120.patient.data.bean.response;</p>
+            <p>package com.bean.response;</p>
 
             <p v-for="imp in bean.importTypes">import {{imp}};</p>
 
@@ -47,7 +47,7 @@
 
 <div id="apiset" v-if="apiArr">
     <div style="background: cornsilk">
-        <p>package com.cim120.patient.data.bean.response;</p>
+        <p>package com.data.remote;</p>
 
         <p>import java.util.Map;</p>
 
@@ -77,7 +77,31 @@
 
 <script>
     $("#submit").click(generateCode);
+    let beanVue =  new Vue({
+        el: '#bean',
+        data: {
+            beans: ''
+        },
+        methods: {
+            firstToUpperCase: function (str) {
+                return str.substr(0, 1).toUpperCase() + str.substr(1);
+            }
+        }
 
+    });
+    let apiVue =  new Vue({
+        el: '#apiset',
+        data: {
+            apiArr: ''
+        },
+        methods: {
+            camelCase: function (input) {
+                return input.replace(/\/{\w*\}/g, '').replace(/\/(.)/g, function (match, group1) {
+                    return group1.toUpperCase();
+                });
+            }
+        }
+    });
     function generateCode() {
         var gitPath = $("#gitPath")[0].value;
         var gitUrl = $("#gitUrl")[0].value;
@@ -93,31 +117,9 @@
                     beans = beans.concat(generateBeanFieldFromJson(JSON.stringify(apiArr[i].response), apiArr[i].hrefName));
                 }
             }
-            new Vue({
-                el: '#bean',
-                data: {
-                    beans: beans
-                },
-                methods: {
-                    firstToUpperCase: function (str) {
-                        return str.substr(0, 1).toUpperCase() + str.substr(1);
-                    }
-                }
+            Vue.set(beanVue, 'beans', beans)
+            Vue.set(apiVue, 'apiArr', apiArr)
 
-            });
-            new Vue({
-                el: '#apiset',
-                data: {
-                    apiArr: apiArr
-                },
-                methods: {
-                    camelCase: function (input) {
-                        return input.replace(/\/{\w*\}/g, '').replace(/\/(.)/g, function (match, group1) {
-                            return group1.toUpperCase();
-                        });
-                    }
-                }
-            });
             console.log(textStatus);
         });
     }

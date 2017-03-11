@@ -4,7 +4,16 @@
 /**
  * 解析Json，返回json中包含的属性、属性类型
  * @param text
- * @returns {{}}
+ * @returns [{
+ *   className: className,//实体类中名字
+ *   fields: [{ //实体类中含有的属性列表
+ *       name: taskName,
+ *       type: String
+ *   }],
+ *   importTypes: [{//需要import的类型列表
+ *       'java.util.List'
+ *   }]
+ * }]
  */
 function generateBeanFieldFromJson(text, className) {
     //转换json对象
