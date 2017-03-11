@@ -40,7 +40,7 @@ API Blueprint是一套基于markdown的API描述语言规范，基于此规范�
 - 使用`node`的`fs`模块，读取文件列表，源码中是过滤了下以`.apib`结尾的文件列表，此处如果有需要可以联系作者，修改为传递参数控制
 - 使用`drafter.parse`解析API Blueprint文档，解析后的格式为
 
-``` json
+```
 {
   "element": "parseResult",
   "content": [
@@ -68,7 +68,7 @@ API Blueprint是一套基于markdown的API描述语言规范，基于此规范�
 }
 ```
 - 可以发现上面的结构嵌套比较深，后面使用的时候会比较麻烦，这里把有效数据拿到，并为每个HttpTransaction生成一个实体（JsonObject），处理逻辑在`apib_parser.js`中，解析之后的格式为：
-``` json
+```
 [{
     href:'',//请求路径:/get/task/{taskid}
     hrefName:'',//路径对应name:GetTask
@@ -85,7 +85,7 @@ API Blueprint是一套基于markdown的API描述语言规范，基于此规范�
 ```
 - 我们可以很方便的从上面拿到请求响应的数据，正常情况下会是json格式的，例如：`{'taskId':1,'taskName':'任务'}`,
 - 以上几步是在`nodejs`的服务端完成，通信采用`ajax`，取得数据后我们把HttpTransaction中请求响应的`json`数据转换为对生成实体类友好的结构，处理逻辑主要在`to_bean.js`中，处理之后的格式为：
-``` json
+```
 [{
     className: className,//实体类中名字
     fields: [{ //实体类中含有的属性列表
