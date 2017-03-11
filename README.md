@@ -97,6 +97,7 @@ API Blueprint是一套基于markdown的API描述语言规范，基于此规范�
     }]
 }]
 ```
+#### 模板生成    
 - 经过以上的准备，得到了我们需要的数据，然后借助`vue.js`渲染`html`代码模板,代码都在`bean_template.html`中，目前写了java实体类和Api接口类的模板，可自行扩展其他模板。下面贴出一段实体类的模板代码：
 ``` html
 <div id="bean" v-if="beans">
@@ -121,6 +122,7 @@ API Blueprint是一套基于markdown的API描述语言规范，基于此规范�
     </div>
 </div>
 ```
+#### docker整合
 - 最后整合在docker容器中，docker可以让应用程序布署在软件容器下的工作可以自动化进行，不过开发接触的偏少一些，有兴趣的可以了解一下，下面我贴出我的`DockerFile`代码：
 ```
 # 选择image
