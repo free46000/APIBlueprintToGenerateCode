@@ -207,7 +207,5 @@ function forEach(arr, callback) {
 }
 
 function copyProperties(from, to) {
-    for (key in from) {
-        to[key] = from[key];
-    }
+   Object.assign(to,from);
 }

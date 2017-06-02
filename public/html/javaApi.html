@@ -55,7 +55,7 @@
         <p>import retrofit2.http.*;</p>
         <p>import rx.Observable;</p>
 
-        <p>public interface ApiSet {</p>
+        <p >public interface ApiSet {</p>
         <div v-for="api in apiArr">
             <p>/**</p>
             <p>*{{api.title}} {{api.subTitle}} {{api.tip}}</p>
@@ -76,6 +76,7 @@
 </body>
 
 <script>
+
     $("#submit").click(generateCode);
     let beanVue =  new Vue({
         el: '#bean',
