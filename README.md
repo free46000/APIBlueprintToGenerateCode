@@ -144,11 +144,13 @@ RUN npm install .
 
 CMD [ "node", "/usr/app/bin/www" ]
 ```
+
 ## 总结
-目前代码只是在html中进行输出，本来计划下一步在指定目录生成类文件，但是有两个问题没有办法很好解决，所以就暂时放弃了，一是实体类的命名；还有实体类去重，例如：任务列表和详情接口同样都会有任务的实体，自动化生成代码会生成两个类。
+目前代码只是在html中进行输出，本来计划下一步在指定目录生成类文件，但是有两个问题没有办法很好解决，所以就暂时放弃了，一是实体类的命名；还有实体类去重，例如：任务列表和详情接口同样都会有任务的实体，自动化生成代码会生成两个类。   
 
-本项目是摸索前行的实验性质的小项目，主要写写实现的思路，写的比较简陋，很多部分也没有细写，欢迎交流。
-
+本项目主要是为了熟悉`NodeJS` `vue`等前端开发知识，娱乐为主，主要写写实现的思路，虽然写的比较简陋，但是里面用了一些比较好的开源组件`API Blueprint` `nodegit` `docker` 等，非常值得学习，欢迎留言交流，希望可以帮助到大家。
+ 
+最后请允许打个小广告：作者开源了一个一个优雅的实现多类型的RecyclerView类库 支持DataBinding Form表单录入，Github地址：[https://github.com/free46000/MultiItem](https://github.com/free46000/MultiItem)
 
 [APIBlueprintToGenerateCode]:https://github.com/free46000/APIBlueprintToGenerateCode.git
 [nodegit]: https://github.com/nodegit/nodegit
